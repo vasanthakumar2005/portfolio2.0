@@ -1,0 +1,574 @@
+/* ==========================================================================
+   AI & DATA SCIENCE PORTFOLIO BRAND BOOK DOCUMENT STYLESHEET
+   Candidate: VASANTHAKUMAR D
+   Target: A4 Paginated Brand Book Document (Print to PDF ready)
+   Theme: Linear / Apple Inspired - Dark Obsidian, Electric Royal Blue, Slate
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --bg-main: #f8fafc;
+    --page-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --brand-blue: #2563eb;
+    --brand-blue-dark: #1d4ed8;
+    --brand-blue-light: #eff6ff;
+    --brand-cyan: #06b6d4;
+    --brand-dark: #0b0f19;
+    --card-bg: #f8fafc;
+    --card-border: #e2e8f0;
+    --accent-glow: rgba(37, 99, 235, 0.12);
+    --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-code: 'JetBrains Mono', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+html, body {
+    background-color: #0f172a;
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    line-height: 1.5;
+    font-size: 13px;
+}
+
+/* Document Top Control Bar (Screen Only) */
+.doc-control-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: rgba(11, 15, 25, 0.94);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    color: #ffffff;
+}
+
+.doc-control-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+}
+
+.doc-control-title span {
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.doc-control-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.btn-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #ffffff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-print:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+}
+
+.doc-container {
+    padding-top: 80px;
+    padding-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Page Frame Settings - Standard A4 (210mm x 297mm) */
+.page {
+    width: 210mm;
+    height: 297mm;
+    min-height: 297mm;
+    background: var(--page-bg);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+    position: relative;
+    padding: 16mm 18mm 16mm 18mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+}
+
+/* Header & Footer Rules */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.page-header .brand-tag {
+    color: var(--brand-blue);
+    font-weight: 700;
+}
+
+.page-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1.5px solid #e2e8f0;
+    padding-top: 8px;
+    margin-top: auto;
+    font-size: 8pt;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.page-footer .page-number {
+    font-family: var(--font-code);
+    font-weight: 600;
+    color: var(--brand-blue);
+    background: var(--brand-blue-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.page-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Typography Standards */
+h1, h2, h3, h4, h5 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.section-title {
+    font-size: 18pt;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    line-height: 1.15;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title span {
+    color: var(--brand-blue);
+}
+
+.section-subtitle {
+    font-size: 9pt;
+    font-weight: 700;
+    color: var(--brand-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+}
+
+.section-divider {
+    height: 3px;
+    width: 45px;
+    background: linear-gradient(90deg, var(--brand-blue), var(--brand-cyan));
+    border-radius: 2px;
+    margin-bottom: 14px;
+}
+
+/* Cards & Layout Modules */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    position: relative;
+}
+
+.card-blue {
+    background: var(--brand-blue-light);
+    border-color: #bfdbfe;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.card-title {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.tag {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #334155;
+    font-size: 7.5pt;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+.tag-blue {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.tag-cyan {
+    background: #cff4fc;
+    color: #087990;
+}
+
+/* Page 1 Cover Styling */
+.page-cover {
+    background: linear-gradient(145deg, #0b0f19 0%, #0f172a 60%, #1e293b 100%);
+    color: #ffffff;
+    padding: 22mm 20mm;
+}
+
+.cover-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cover-logo {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 11pt;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+}
+
+.cover-logo span {
+    color: #60a5fa;
+}
+
+.cover-badge {
+    background: rgba(37, 99, 235, 0.25);
+    border: 1px solid rgba(96, 165, 250, 0.4);
+    color: #93c5fd;
+    font-size: 8pt;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+}
+
+.cover-main {
+    margin-top: 30px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cover-subtitle-top {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 12px;
+}
+
+.cover-name {
+    font-family: var(--font-heading);
+    font-size: 38pt;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin-bottom: 12px;
+}
+
+.cover-name span {
+    background: linear-gradient(135deg, #60a5fa, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cover-role {
+    font-size: 15pt;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-bottom: 22px;
+    line-height: 1.3;
+}
+
+.cover-desc {
+    font-size: 10pt;
+    color: #94a3b8;
+    max-width: 95%;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.cover-graphics {
+    width: 100%;
+    height: 120px;
+    margin-bottom: 24px;
+}
+
+.cover-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px 18px;
+}
+
+.cover-meta-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.cover-meta-label {
+    font-size: 7.5pt;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.cover-meta-val {
+    font-size: 9pt;
+    color: #f1f5f9;
+    font-weight: 600;
+}
+
+/* Timeline Components */
+.timeline-list {
+    position: relative;
+    padding-left: 20px;
+}
+
+.timeline-list::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: #cbd5e1;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -19px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--brand-blue);
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 0 2px var(--brand-blue);
+}
+
+.timeline-date {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: var(--brand-blue);
+    margin-bottom: 2px;
+}
+
+.timeline-heading {
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.timeline-sub {
+    font-size: 9pt;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.timeline-body {
+    font-size: 9pt;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Progress Bars */
+.progress-bar-wrap {
+    margin-bottom: 10px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.progress-bg {
+    height: 7px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand-blue), var(--brand-cyan));
+    border-radius: 4px;
+}
+
+/* Diagram Container */
+.diagram-box {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ATS Resume Specific Styles */
+.ats-resume-header {
+    border-bottom: 2px solid var(--text-primary);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+}
+.ats-resume-name {
+    font-size: 20pt;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+}
+.ats-resume-contact {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+.ats-section-title {
+    font-size: 11pt;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 2px;
+    margin-top: 10px;
+    margin-bottom: 6px;
+}
+.ats-item {
+    margin-bottom: 8px;
+}
+.ats-item-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 9.5pt;
+}
+.ats-item-sub {
+    font-style: italic;
+    font-size: 8.5pt;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+}
+.ats-bullet-list {
+    padding-left: 14px;
+    font-size: 8.5pt;
+    line-height: 1.4;
+}
+
+/* Print Overrides */
+@media print {
+    .doc-control-bar {
+        display: none !important;
+    }
+    .doc-container {
+        padding: 0 !important;
+        gap: 0 !important;
+        background: transparent !important;
+    }
+    body {
+        background: #ffffff !important;
+    }
+    .page {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        padding: 14mm 16mm !important;
+        page-break-after: always !important;
+        break-after: page !important;
+    }
+}

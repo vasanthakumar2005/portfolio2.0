@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VASANTHAKUMAR D - Resume</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Liberation+Sans:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        @page {
+            size: A4 portrait;
+            margin: 12mm 15mm;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        body {
+            font-family: 'Liberation Sans', 'Inter', Arial, sans-serif;
+            color: #000000;
+            background: #ffffff;
+            font-size: 10.5pt;
+            line-height: 1.35;
+            padding: 20px 30px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .no-print-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: #0f172a;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 9999;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-print {
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .resume-container {
+            margin-top: 40px;
+            border: 1px solid #000000;
+            padding: 18px 24px;
+            background: #ffffff;
+        }
+
+        /* Top Header */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        .header-logo {
+            width: 140px;
+            vertical-align: top;
+        }
+
+        .header-title {
+            text-align: right;
+            vertical-align: top;
+        }
+
+        .candidate-name {
+            font-size: 22pt;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .contact-line {
+            font-size: 9.5pt;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .contact-line a {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .section-header {
+            font-size: 11pt;
+            font-weight: 700;
+            border-bottom: 1.5px solid #000000;
+            padding-bottom: 2px;
+            margin-top: 10px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        p, ul {
+            font-size: 10pt;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 3px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 10.5pt;
+        }
+
+        .item-desc {
+            font-size: 9.8pt;
+            margin-top: 2px;
+            margin-bottom: 6px;
+        }
+
+        .skills-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .skills-table td {
+            vertical-align: top;
+            width: 50%;
+        }
+
+        @media print {
+            .no-print-bar {
+                display: none !important;
+            }
+            body {
+                padding: 0 !important;
+            }
+            .resume-container {
+                margin-top: 0 !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print-bar">
+        <span style="font-weight: 700;">VASANTHAKUMAR D — Official Resume</span>
+        <div>
+            <a href="index.html" class="btn-print" style="background: rgba(255,255,255,0.15); margin-right: 10px;">Back to Portfolio</a>
+            <button onclick="window.print()" class="btn-print">Print / Save as PDF</button>
+        </div>
+    </div>
+
+    <div class="resume-container">
+        
+        <!-- Header -->
+        <table class="header-table">
+            <tr>
+                <td class="header-logo">
+                    <div style="font-size: 18pt; font-weight: 900; font-family: serif; color: #b91c1c; line-height: 1;">MCET</div>
+                    <div style="font-size: 6.5pt; color: #475569; font-weight: 600;">COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
+                </td>
+                <td class="header-title">
+                    <div class="candidate-name">VASANTHAKUMAR D</div>
+                    <div class="contact-line">
+                        <strong>Email:</strong> dvasanthakumarduraisamy@gmail.com | <strong>Phone:</strong> +91 9345285202
+                    </div>
+                    <div class="contact-line">
+                        <strong>LinkedIn:</strong> linkedin.com/in/vasanthkumar083 | <strong>GitHub:</strong> github.com/vasanthakumar2005
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Objective -->
+        <div class="section-header">Objective:</div>
+        <p style="margin-bottom: 8px;">
+            Motivated B.Tech student in Artificial Intelligence and Data Science with hands-on experience in machine learning, data analysis, and AI application development. Skilled in Python, SQL, Power BI, and AI technologies, with a passion for building intelligent solutions to real-world problems.
+        </p>
+
+        <!-- Area of Interest -->
+        <div class="section-header">Area of Interest:</div>
+        <ul style="margin-bottom: 8px;">
+            <li>Data Science and Analysis, Visualization</li>
+            <li>Web Development (Front-end, Back-end)</li>
+            <li>Data Base management</li>
+            <li>Designing and Editing</li>
+        </ul>
+
+        <!-- Education -->
+        <div class="section-header">Education:</div>
+        <div style="margin-bottom: 8px;">
+            <div class="item-row">
+                <span>• Bachelor of Technology in Artificial Intelligence and Data Science | Dr. Mahalingam College of Engineering and Technology, Anna University, Pollachi</span>
+            </div>
+            <div style="font-weight: 700; font-size: 9.5pt; margin-bottom: 4px;">
+                2023-2027 | CGPA: 8.2/10
+            </div>
+
+            <div class="item-row">
+                <span>• Higher Secondary Certificate | BVB Matric Higher Secondary School, Palani</span>
+            </div>
+            <div style="font-weight: 700; font-size: 9.5pt; margin-bottom: 4px;">
+                2022-2023 | Percentage: 74
+            </div>
+
+            <div class="item-row">
+                <span>• Secondary School Leaving Certificate | BVB Matric Higher Secondary School, Palani</span>
+            </div>
+            <div style="font-weight: 700; font-size: 9.5pt;">
+                2020-2021 | Completed
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="section-header">Skills:</div>
+        <table class="skills-table" style="margin-bottom: 8px;">
+            <tr>
+                <td>
+                    <div style="font-weight: 700; margin-bottom: 4px;">Technical Skills:</div>
+                    <ul style="padding-left: 16px;">
+                        <li><strong>Programming Languages:</strong> Java, Python, HTML, CSS, JavaScript</li>
+                        <li><strong>Machine Learning:</strong> Scikit-learn, TensorFlow (Basics), OpenCV</li>
+                        <li><strong>Database Management:</strong> MySQL</li>
+                        <li><strong>Data Analysis:</strong> Power-bi, Excel, Data Visualization</li>
+                    </ul>
+                </td>
+                <td>
+                    <div style="font-weight: 700; margin-bottom: 4px;">Soft Skills:</div>
+                    <ul style="padding-left: 16px;">
+                        <li><strong>Communication:</strong> Strong verbal and written skills - creating dashboards, writing reports, presenting project outcomes</li>
+                        <li><strong>Problem-Solving:</strong> Analytical thinking, Root Cause Analysis</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Projects -->
+        <div class="section-header">Projects:</div>
+        <div style="margin-bottom: 8px;">
+            <div class="item-row">
+                <span>MCET Document Management Portal Guided (by: Dr. Arun Madhavan)</span>
+                <span>February 2026</span>
+            </div>
+            <div class="item-desc">
+                Built a secure web-based document management portal for Dr. Mahalingam College of Engineering and Technology (MCET) with authentication, file upload, file organization, and document management features.
+            </div>
+
+            <div class="item-row">
+                <span>L.U.N.A – AI-Powered Multi-Modal Lung Disease Detection System</span>
+                <span>2025 - Ongoing</span>
+            </div>
+            <div class="item-desc">
+                Developed an AI-powered healthcare platform for lung disease detection using medical imaging, respiratory audio analysis, and deep learning techniques.
+            </div>
+
+            <div class="item-row">
+                <span>Market Mapping for CCTV Sales using Power BI</span>
+                <span>16.06.25 – 30.06.25</span>
+            </div>
+            <div class="item-desc">
+                Analyzed data from 100+ CCTV shops using Excel and Power BI to generate marketing insights.
+            </div>
+        </div>
+
+        <!-- Internships -->
+        <div class="section-header">Internships:</div>
+        <div style="margin-bottom: 8px;">
+            <div class="item-row">
+                <span>Netlush Technologies – Data Analyst Intern | Palani</span>
+                <span>16.06.25 to 30.06.25</span>
+            </div>
+            <div class="item-desc">
+                Collected, cleaned, and visualized data from 100+ businesses using Excel and Power BI to support data-driven marketing decisions.
+            </div>
+
+            <div class="item-row">
+                <span>Digital Marketing Intern – Sorcee clothing brand | Pollachi</span>
+                <span>01.05.24 to 30.06.24</span>
+            </div>
+            <div class="item-desc">
+                Analyzed campaign performance, managed social media content, and improved audience engagement using data-driven marketing strategies.
+            </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="section-header">Certifications:</div>
+        <ul style="margin-bottom: 8px;">
+            <li>Got certification in Tata Data Visualization Intern (12 Dec 2024) and BCGX Data Science Simulation (15 Dec 2024).</li>
+            <li>Completed NPTEL course on Entrepreneurship — Elite (Score: 63%).</li>
+        </ul>
+
+        <!-- Achievements -->
+        <div class="section-header">Achievements:</div>
+        <ul style="margin-bottom: 8px;">
+            <li>Increased online engagement by 15% for the client's social media through data-driven marketing and as a video editor.</li>
+            <li>As an member INVICTUS our association organized and managed many events successfully.</li>
+        </ul>
+
+        <!-- Extracurricular Activities -->
+        <div class="section-header">Extracurricular Activities:</div>
+        <ul>
+            <li>Participated in TN Police (cyber security) poster designing competition.</li>
+            <li>Pole Vault athlete, showcasing discipline, focus, and commitment through sports.</li>
+            <li>Handled social media, designed content, and editing videos for Arasiyal seivom YouTube channel.</li>
+        </ul>
+
+    </div>
+
+</body>
+</html>

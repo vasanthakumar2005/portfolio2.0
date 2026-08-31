@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vasanthakumar D - AI & Data Science Student at Dr. MCET. Portfolio showcasing machine learning, data analytics, and web applications.">
+    <title>Vasanthakumar D | AI & Data Science Student</title>
+    
+    <!-- React & React DOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect, useRef } = React;
+
+      function ParticleCanvas() {
+        const canvasRef = useRef(null);
+        useEffect(() => {
+          const canvas = canvasRef.current;
+          if (!canvas) return;
+          const ctx = canvas.getContext('2d');
+          let width = canvas.width = window.innerWidth;
+          let height = canvas.height = window.innerHeight;
+
+          const handleResize = () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+          };
+          window.addEventListener('resize', handleResize);
+
+          const particles = [];
+          const particleCount = Math.floor(width / 22);
+
+          for (let i = 0; i < particleCount; i++) {
+            particles.push({
+              x: Math.random() * width,
+              y: Math.random() * height,
+              radius: Math.random() * 1.5 + 0.5,
+              vx: (Math.random() - 0.5) * 0.4,
+              vy: (Math.random() - 0.5) * 0.4,
+              alpha: Math.random() * 0.5 + 0.2
+            });
+          }
+
+          let reqId;
+          const animate = () => {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particles.length; i++) {
+              let p = particles[i];
+              p.x += p.vx; p.y += p.vy;
+              if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
+              if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(37, 99, 235, ${p.alpha * 0.6})`;
+              ctx.fill();
+            }
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                let dx = particles[i].x - particles[j].x;
+                let dy = particles[i].y - particles[j].y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 110) {
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = `rgba(37, 99, 235, ${0.12 * (1 - dist / 110)})`;
+                  ctx.stroke();
+                }
+              }
+            }
+            reqId = requestAnimationFrame(animate);
+          };
+          animate();
+          return () => {
+            window.removeEventListener('resize', handleResize);
+            cancelAnimationFrame(reqId);
+          };
+        }, []);
+
+        return <canvas id="canvas-particles" ref={canvasRef}></canvas>;
+      }
+
+      function Navbar() {
+        const [scrolled, setScrolled] = useState(false);
+        const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+        const [activeSection, setActiveSection] = useState('hero');
+
+        useEffect(() => {
+          const handleScroll = () => {
+            setScrolled(window.scrollY > 50);
+            const sections = ['hero', 'about', 'skills', 'projects', 'experience', 'certifications', 'achievements'];
+            const scrollPos = window.scrollY + 180;
+            for (const section of sections) {
+              const el = document.getElementById(section);
+              if (el) {
+                const top = el.offsetTop;
+                const height = el.offsetHeight;
+                if (scrollPos >= top && scrollPos < top + height) {
+                  setActiveSection(section);
+                  break;
+                }
+              }
+            }
+          };
+          window.addEventListener('scroll', handleScroll);
+          return () => window.removeEventListener('scroll', handleScroll);
+        }, []);
+
+        const navItems = [
+          { id: 'hero', label: 'Home' },
+          { id: 'about', label: 'About' },
+          { id: 'skills', label: 'Skills' },
+          { id: 'projects', label: 'Projects' },
+          { id: 'experience', label: 'Experience' },
+          { id: 'certifications', label: 'Certifications' },
+          { id: 'achievements', label: 'Achievements' }
+        ];
+
+        return (
+          <header className={`navbar ${scrolled ? 'scrolled' : ''}`} id="navbar">
+            <a href="#hero" className="logo">
+              VASANTHAKUMAR D
+            </a>
+            <nav>
+              <ul className={`nav-menu ${mobileMenuOpen ? 'active' : ''}`} id="nav-menu">
+                {navItems.map(item => (
+                  <li key={item.id}>
+                    <a
+                      href={`#${item.id}`}
+                      className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+                <li><a href="resume.html" target="_blank" className="btn-nav-cta">Resume (PDF)</a></li>
+              </ul>
+            </nav>
+            <button
+              className={`nav-toggle ${mobileMenuOpen ? 'active' : ''}`}
+              id="nav-toggle"
+              aria-label="Toggle Navigation Menu"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <span></span><span></span><span></span>
+            </button>
+          </header>
+        );
+      }
+
+      function Hero() {
+        const [typewriterText, setTypewriterText] = useState('');
+
+        useEffect(() => {
+          const words = [
+            "AI & Data Science Student",
+            "Final-Year B.Tech Student @ Dr. MCET",
+            "Machine Learning Student",
+            "AI-Powered Product Builder"
+          ];
+          let wordIdx = 0, charIdx = 0, isDeleting = false, timeoutId;
+
+          function type() {
+            const currentWord = words[wordIdx];
+            if (isDeleting) {
+              setTypewriterText(currentWord.substring(0, charIdx - 1) + '|');
+              charIdx--;
+            } else {
+              setTypewriterText(currentWord.substring(0, charIdx + 1) + '|');
+              charIdx++;
+            }
+            let typeSpeed = isDeleting ? 35 : 75;
+            if (!isDeleting && charIdx === currentWord.length) {
+              typeSpeed = 2200;
+              isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+              isDeleting = false;
+              wordIdx = (wordIdx + 1) % words.length;
+              typeSpeed = 400;
+            }
+            timeoutId = setTimeout(type, typeSpeed);
+          }
+          type();
+          return () => clearTimeout(timeoutId);
+        }, []);
+
+        return (
+          <section id="hero" className="hero">
+            <div className="container hero-grid">
+              <div className="hero-content">
+                <div className="hero-pill">
+                  <span className="hero-pill-dot"></span>
+                  <span>AI & DATA SCIENCE ENGINEER • BUILDING INTELLIGENT SYSTEMS</span>
+                </div>
+                <h1 className="hero-title">Building <span>AI Products</span> That Solve Real Problems</h1>
+                <div className="hero-typewriter" id="typewriter">{typewriterText}</div>
+                <p className="hero-description">
+                  Final-year B.Tech student in Artificial Intelligence & Data Science at Dr. MCET (CGPA 8.2/10). Passionate about machine learning algorithms, statistical data analytics, and intelligent web applications.
+                </p>
+                <div className="hero-cta">
+                  <a href="#projects" className="btn btn-primary">
+                    Explore Projects
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </a>
+                  <a href="#contact" className="btn btn-secondary">Get In Touch</a>
+                </div>
+                <div className="hero-stats">
+                  <div className="stat-item"><span className="stat-val">8.2</span><span className="stat-label">Academic CGPA</span></div>
+                  <div className="stat-item"><span className="stat-val">3+</span><span className="stat-label">AI & Web Projects</span></div>
+                  <div className="stat-item"><span className="stat-val">2</span><span className="stat-label">Industry Internships</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function About() {
+        return (
+          <section id="about">
+            <div className="container">
+              <div className="section-header">
+                <span className="section-subtitle">BIOGRAPHY</span>
+                <h2 className="section-title">About <span>Vasanthakumar D</span></h2>
+              </div>
+              <div className="about-grid">
+                <div className="glass-card about-text-card">
+                  <p className="about-p">
+                    I am a final-year student pursuing a <strong>Bachelor of Technology in Artificial Intelligence and Data Science</strong> at <strong>Dr. Mahalingam College of Engineering and Technology (Anna University)</strong> with an academic CGPA of <strong>8.2 / 10</strong>.
+                  </p>
+                  <p className="about-p">
+                    My passion lies in extracting high-value intelligence from data and creating smart, user-friendly software applications. Equipped with practical internship experience in data analytics and digital marketing strategy, alongside guided technical projects in healthcare AI and document management portals.
+                  </p>
+                  <div className="about-highlights">
+                    <div className="highlight-item"><div className="highlight-val">B.Tech AI & DS</div><div className="highlight-lbl">Dr. MCET Student (2023–2027)</div></div>
+                    <div className="highlight-item"><div className="highlight-val">CGPA: 8.2 / 10</div><div className="highlight-lbl">Academic Standing</div></div>
+                    <div className="highlight-item"><div className="highlight-val">Athlete & Leader</div><div className="highlight-lbl">Pole Vault & INVICTUS</div></div>
+                    <div className="highlight-item"><div className="highlight-val">+15% Reach</div><div className="highlight-lbl">Digital Analytics Impact</div></div>
+                  </div>
+                </div>
+
+                <div className="about-cards-stack">
+                  <div className="glass-card pillar-card">
+                    <div className="pillar-icon">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                    </div>
+                    <div>
+                      <div className="pillar-title">Machine Learning & Deep Learning Student</div>
+                      <div className="pillar-desc">Building CNN and RNN models, OpenCV computer vision algorithms, and acoustic spectrogram classifications for real-world diagnostic applications.</div>
+                    </div>
+                  </div>
+
+                  <div className="glass-card pillar-card">
+                    <div className="pillar-icon" style={{ background: 'rgba(6, 182, 212, 0.15)', color: 'var(--accent-cyan)' }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    </div>
+                    <div>
+                      <div className="pillar-title">Data Analytics & Power BI</div>
+                      <div className="pillar-desc">Transforming multi-source spreadsheets and SQL databases into interactive DAX dashboards and geographic market maps.</div>
+                    </div>
+                  </div>
+
+                  <div className="glass-card pillar-card">
+                    <div className="pillar-icon" style={{ background: 'rgba(139, 92, 246, 0.15)', color: 'var(--accent-purple)' }}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    </div>
+                    <div>
+                      <div className="pillar-title">Full-Stack Web Systems & UX</div>
+                      <div className="pillar-desc">Designing clean, responsive user interfaces and backend architectures using HTML5, CSS3, JavaScript (ES6+), and MySQL.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Skills() {
+        const skillsList = [
+          { icon: '🐍', name: 'Python', badge: 'Advanced Language' },
+          { icon: '☕', name: 'Java', badge: 'Object-Oriented' },
+          { icon: '⚡', name: 'JavaScript', badge: 'ES6+ Web Logic' },
+          { icon: '🤖', name: 'Scikit-learn', badge: 'ML Models' },
+          { icon: '🧠', name: 'TensorFlow / Keras', badge: 'Neural Networks' },
+          { icon: '👁️', name: 'OpenCV', badge: 'Computer Vision' },
+          { icon: '🔬', name: 'Deep Learning', badge: 'CNN & Audio AI' },
+          { icon: '📊', name: 'Power BI', badge: 'DAX & Market Mapping' },
+          { icon: '🗄️', name: 'SQL / MySQL', badge: 'Relational Database' },
+          { icon: '📈', name: 'Advanced Excel', badge: 'Pivot & Data Cleaning' },
+          { icon: '🔢', name: 'Pandas & NumPy', badge: 'Data Processing' },
+          { icon: '🌿', name: 'Git & GitHub', badge: 'Version Control' },
+          { icon: '💻', name: 'VS Code', badge: 'Development IDE' },
+          { icon: '📓', name: 'Jupyter Notebook', badge: 'Data Science Labs' }
+        ];
+
+        const marqueeItems = [...skillsList, ...skillsList.slice(0, 10)];
+
+        return (
+          <section id="skills">
+            <div className="container">
+              <div className="section-header">
+                <span className="section-subtitle">PROFICIENCIES</span>
+                <h2 className="section-title">Technical <span>Skills & Tools</span></h2>
+              </div>
+              <div className="marquee-container">
+                <div className="marquee-track">
+                  {marqueeItems.map((item, idx) => (
+                    <div key={idx} className="marquee-card">
+                      <div className="skill-icon-wrap">{item.icon}</div>
+                      <div className="skill-name">{item.name}</div>
+                      <div className="skill-category-badge">{item.badge}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Projects() {
+        return (
+          <section id="projects">
+            <div className="container">
+              <div className="section-header">
+                <span className="section-subtitle">PORTFOLIO SHOWCASE</span>
+                <h2 className="section-title">Featured <span>Projects</span></h2>
+              </div>
+              <div className="projects-grid">
+                <div className="glass-card project-card">
+                  <div className="project-media">
+                    <svg className="project-svg-bg" viewBox="0 0 320 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="320" height="160" fill="#0f172a"/>
+                      <rect x="12" y="10" width="296" height="24" rx="6" fill="#1e293b" stroke="rgba(255,255,255,0.08)"/>
+                      <circle cx="24" cy="22" r="3.5" fill="#ef4444"/>
+                      <circle cx="35" cy="22" r="3.5" fill="#f59e0b"/>
+                      <circle cx="46" cy="22" r="3.5" fill="#10b981"/>
+                      <text x="62" y="25" fill="#94a3b8" fontSize="8" fontFamily="var(--font-mono)" fontWeight="600">IMAGE → MODEL → CLASSIFICATION</text>
+                      <rect x="12" y="42" width="160" height="106" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.1)"/>
+                      <line x1="20" y1="65" x2="164" y2="65" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+                      <line x1="20" y1="90" x2="164" y2="90" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+                      <line x1="20" y1="115" x2="164" y2="115" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+                      <line x1="60" y1="46" x2="60" y2="142" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+                      <line x1="110" y1="46" x2="110" y2="142" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+                      <rect x="50" y="60" width="70" height="55" rx="4" fill="rgba(37,99,235,0.12)" stroke="#2563eb" strokeWidth="1.5" strokeDasharray="4 2"/>
+                      <circle cx="85" cy="87.5" r="14" fill="rgba(2,132,199,0.2)" stroke="#0284c7" strokeWidth="1.5"/>
+                      <path d="M 50 66 L 50 60 L 56 60" stroke="#38bdf8" strokeWidth="2" fill="none"/>
+                      <path d="M 120 66 L 120 60 L 114 60" stroke="#38bdf8" strokeWidth="2" fill="none"/>
+                      <path d="M 50 109 L 50 115 L 56 115" stroke="#38bdf8" strokeWidth="2" fill="none"/>
+                      <path d="M 120 109 L 120 115 L 114 115" stroke="#38bdf8" strokeWidth="2" fill="none"/>
+                      <text x="52" y="55" fill="#38bdf8" fontSize="7" fontFamily="var(--font-mono)" fontWeight="700">REGION_OF_INTEREST</text>
+                      <rect x="180" y="42" width="128" height="106" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.1)"/>
+                      <text x="190" y="58" fill="#64748b" fontSize="7" fontFamily="var(--font-mono)">PIPELINE STAGES</text>
+                      <rect x="190" y="64" width="108" height="20" rx="4" fill="rgba(37,99,235,0.15)" stroke="rgba(37,99,235,0.3)"/>
+                      <text x="196" y="77" fill="#38bdf8" fontSize="7.5" fontFamily="var(--font-mono)" fontWeight="600">INPUT: SCAN_DATA</text>
+                      <rect x="190" y="90" width="108" height="20" rx="4" fill="rgba(2,132,199,0.15)" stroke="rgba(2,132,199,0.3)"/>
+                      <text x="196" y="103" fill="#60a5fa" fontSize="7.5" fontFamily="var(--font-mono)" fontWeight="600">MODEL: RESNET50</text>
+                      <rect x="190" y="116" width="108" height="24" rx="4" fill="rgba(37,99,235,0.25)" stroke="#2563eb"/>
+                      <text x="196" y="131" fill="#ffffff" fontSize="8" fontFamily="var(--font-heading)" fontWeight="700">CLASSIFICATION READY</text>
+                    </svg>
+                  </div>
+                  <div className="project-body">
+                    <div>
+                      <div className="project-tags">
+                        <span className="tag">Python</span><span className="tag">TensorFlow</span><span className="tag">OpenCV</span><span className="tag">Librosa</span><span className="tag">Multi-Modal AI</span>
+                      </div>
+                      <h3 className="project-title">L.U.N.A. — AI Multi-Modal Lung Disease Detection</h3>
+                      <p className="project-desc">Multi-modal deep learning platform combining chest X-ray scans (ResNet50 CNN) with acoustic stethoscopic sound spectrograms for rapid diagnostic triage.</p>
+                      <ul className="project-features-list">
+                        <li>94.2% diagnostic accuracy on validation radiology datasets.</li>
+                        <li>Grad-CAM visual heatmaps for lesion interpretability.</li>
+                        <li>Mel-Spectrogram audio feature extraction via Librosa.</li>
+                      </ul>
+                    </div>
+                    <div className="project-links">
+                      <a href="https://github.com/vasanthakumar2005" target="_blank" className="btn btn-secondary btn-project">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                        Codebase
+                      </a>
+                      <a href="portfolio_document.html#luna" target="_blank" className="btn btn-doc btn-project">Architecture Specs</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="glass-card project-card">
+                  <div className="project-media">
+                    <svg className="project-svg-bg" viewBox="0 0 320 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="320" height="160" fill="#0f172a"/>
+                      <rect x="12" y="10" width="296" height="24" rx="6" fill="#1e293b" stroke="rgba(255,255,255,0.08)"/>
+                      <circle cx="24" cy="22" r="3.5" fill="#ef4444"/>
+                      <circle cx="35" cy="22" r="3.5" fill="#f59e0b"/>
+                      <circle cx="46" cy="22" r="3.5" fill="#10b981"/>
+                      <text x="62" y="25" fill="#94a3b8" fontSize="8" fontFamily="var(--font-mono)" fontWeight="600">TEXT / DOC → ENGINE → CLASSIFICATION</text>
+                      <rect x="12" y="42" width="170" height="106" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.1)"/>
+                      <text x="22" y="58" fill="#38bdf8" fontSize="7.5" fontFamily="var(--font-mono)" fontWeight="700">DOCUMENT_INPUT.PDF</text>
+                      <rect x="22" y="68" width="110" height="6" rx="2" fill="#334155"/>
+                      <rect x="136" y="68" width="36" height="6" rx="2" fill="#2563eb"/>
+                      <rect x="22" y="80" width="45" height="6" rx="2" fill="#0284c7"/>
+                      <rect x="71" y="80" width="101" height="6" rx="2" fill="#334155"/>
+                      <rect x="22" y="92" width="120" height="6" rx="2" fill="#334155"/>
+                      <rect x="146" y="92" width="26" height="6" rx="2" fill="#38bdf8"/>
+                      <rect x="22" y="104" width="80" height="6" rx="2" fill="#334155"/>
+                      <rect x="106" y="104" width="66" height="6" rx="2" fill="#334155"/>
+                      <rect x="22" y="120" width="150" height="20" rx="4" fill="rgba(37,99,235,0.1)" stroke="rgba(37,99,235,0.25)"/>
+                      <text x="28" y="133" fill="#60a5fa" fontSize="7" fontFamily="var(--font-mono)">ENCRYPTED & AUTHENTICATED</text>
+                      <rect x="190" y="42" width="118" height="106" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.1)"/>
+                      <text x="200" y="58" fill="#64748b" fontSize="7" fontFamily="var(--font-mono)">RBAC ACCESS ENGINE</text>
+                      <rect x="200" y="66" width="98" height="18" rx="4" fill="rgba(37,99,235,0.15)"/>
+                      <text x="206" y="78" fill="#38bdf8" fontSize="7" fontFamily="var(--font-mono)" fontWeight="600">STUDENT</text>
+                      <rect x="200" y="88" width="98" height="18" rx="4" fill="rgba(2,132,199,0.15)"/>
+                      <text x="206" y="100" fill="#60a5fa" fontSize="7" fontFamily="var(--font-mono)" fontWeight="600">FACULTY</text>
+                      <rect x="200" y="110" width="98" height="24" rx="4" fill="rgba(5,150,105,0.15)" stroke="rgba(5,150,105,0.3)"/>
+                      <text x="206" y="125" fill="#10b981" fontSize="7.5" fontFamily="var(--font-mono)" fontWeight="700">ADMIN CONTROL</text>
+                    </svg>
+                  </div>
+                  <div className="project-body">
+                    <div>
+                      <div className="project-tags">
+                        <span className="tag">HTML5/CSS3</span><span className="tag">JavaScript</span><span className="tag">MySQL</span><span className="tag">RBAC Auth</span>
+                      </div>
+                      <h3 className="project-title">MCET Document Management Portal</h3>
+                      <p className="project-desc">Centralized, high-security web portal built for Dr. Mahalingam College of Engineering & Technology (Guided by Dr. Arun Madhavan, Feb 2026).</p>
+                      <ul className="project-features-list">
+                        <li>Role-Based Access Control (Students, Faculty, Admin).</li>
+                        <li>Encrypted PDF document preview & upload pipeline.</li>
+                        <li>Reduced institutional document retrieval time by 70%.</li>
+                      </ul>
+                    </div>
+                    <div className="project-links">
+                      <a href="https://github.com/vasanthakumar2005" target="_blank" className="btn btn-secondary btn-project">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                        Codebase
+                      </a>
+                      <a href="portfolio_document.html#mcet" target="_blank" className="btn btn-doc btn-project">System Workflow</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="glass-card project-card">
+                  <div className="project-media">
+                    <svg className="project-svg-bg" viewBox="0 0 320 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="320" height="160" fill="#0f172a"/>
+                      <rect x="12" y="10" width="296" height="24" rx="6" fill="#1e293b" stroke="rgba(255,255,255,0.08)"/>
+                      <circle cx="24" cy="22" r="3.5" fill="#ef4444"/>
+                      <circle cx="35" cy="22" r="3.5" fill="#f59e0b"/>
+                      <circle cx="46" cy="22" r="3.5" fill="#10b981"/>
+                      <text x="62" y="25" fill="#94a3b8" fontSize="8" fontFamily="var(--font-mono)" fontWeight="600">DATA → ANALYSIS → FORECAST</text>
+                      <rect x="12" y="42" width="296" height="106" rx="8" fill="#1e293b" stroke="rgba(255,255,255,0.1)"/>
+                      <line x1="24" y1="65" x2="296" y2="65" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+                      <line x1="24" y1="90" x2="296" y2="90" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+                      <line x1="24" y1="115" x2="296" y2="115" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+                      <path d="M 30 115 L 75 95 L 120 100 L 165 72 L 210 65" stroke="#2563eb" strokeWidth="2.5" fill="none"/>
+                      <circle cx="30" cy="115" r="3.5" fill="#38bdf8"/>
+                      <circle cx="75" cy="95" r="3.5" fill="#38bdf8"/>
+                      <circle cx="120" cy="100" r="3.5" fill="#38bdf8"/>
+                      <circle cx="165" cy="72" r="3.5" fill="#38bdf8"/>
+                      <circle cx="210" cy="65" r="3.5" fill="#38bdf8"/>
+                      <path d="M 210 65 L 255 52 L 290 48" stroke="#0284c7" strokeWidth="2.5" strokeDasharray="4 4" fill="none"/>
+                      <circle cx="255" cy="52" r="3" fill="#60a5fa"/>
+                      <circle cx="290" cy="48" r="3" fill="#60a5fa"/>
+                      <text x="24" y="135" fill="#64748b" fontSize="7" fontFamily="var(--font-mono)">Q1</text>
+                      <text x="69" y="135" fill="#64748b" fontSize="7" fontFamily="var(--font-mono)">Q2</text>
+                      <text x="114" y="135" fill="#64748b" fontSize="7" fontFamily="var(--font-mono)">Q3</text>
+                      <text x="159" y="135" fill="#64748b" fontSize="7" fontFamily="var(--font-mono)">Q4</text>
+                      <text x="204" y="135" fill="#38bdf8" fontSize="7" fontFamily="var(--font-mono)" fontWeight="700">Q1 (FCST)</text>
+                      <text x="252" y="135" fill="#38bdf8" fontSize="7" fontFamily="var(--font-mono)" fontWeight="700">Q2 (FCST)</text>
+                      <rect x="180" y="48" width="55" height="14" rx="3" fill="rgba(37,99,235,0.15)"/>
+                      <text x="184" y="58" fill="#38bdf8" fontSize="6.5" fontFamily="var(--font-mono)">― ACTUAL</text>
+                      <rect x="240" y="48" width="60" height="14" rx="3" fill="rgba(2,132,199,0.15)"/>
+                    </svg>
+                  </div>
+                  <div className="project-body">
+                    <div>
+                      <div className="project-tags">
+                        <span className="tag">Power BI</span><span className="tag">DAX Measures</span><span className="tag">Excel</span><span className="tag">Market Analytics</span>
+                      </div>
+                      <h3 className="project-title">Market Mapping for CCTV Sales</h3>
+                      <p className="project-desc">Comprehensive geographic and sales intelligence dashboard evaluating competitor density and hardware sales across 100+ CCTV retail stores.</p>
+                      <ul className="project-features-list">
+                        <li>Cleaned survey data from 100+ retail vendors.</li>
+                        <li>DAX calculations for regional market share & price tiering.</li>
+                        <li>Directly optimized client marketing & distribution routes.</li>
+                      </ul>
+                    </div>
+                    <div className="project-links">
+                      <a href="portfolio_document.html#market" target="_blank" className="btn btn-doc btn-project" style={{ width: '100%', textAlign: 'center' }}>
+                        View Power BI Dashboard Report
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Experience() {
+        return (
+          <section id="experience">
+            <div className="container">
+              <div className="section-header">
+                <span className="section-subtitle">CAREER PATH</span>
+                <h2 className="section-title">Internship <span>Experience</span></h2>
+              </div>
+              <div className="timeline">
+                <div className="timeline-item">
+                  <div className="timeline-dot"></div>
+                  <div className="glass-card timeline-card">
+                    <div className="timeline-date">16.06.2025 – 30.06.2025 &nbsp;•&nbsp; Palani, Tamil Nadu</div>
+                    <div className="timeline-role">Data Analyst Intern</div>
+                    <div className="timeline-company">Netlush Technologies</div>
+                    <ul className="timeline-bullets">
+                      <li>Collected, cleaned, and structured commercial survey data from over <strong>100+ retail storefronts</strong> using Excel and Google Sheets.</li>
+                      <li>Designed interactive <strong>Power BI dashboards</strong> mapping vendor turnover, competitor density, and geographic sales velocity.</li>
+                      <li>Delivered visual analytics reports that empowered client marketing managers to streamline regional distribution routes.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="timeline-item">
+                  <div className="timeline-dot"></div>
+                  <div className="glass-card timeline-card">
+                    <div className="timeline-date">01.05.2024 – 30.06.2024 &nbsp;•&nbsp; Pollachi, Tamil Nadu</div>
+                    <div className="timeline-role">Digital Marketing Intern</div>
+                    <div className="timeline-company">Sorcee Clothing Brand</div>
+                    <ul className="timeline-bullets">
+                      <li>Monitored social media campaign analytics, audience engagement demographics, and ad reach performance.</li>
+                      <li>Designed brand poster collateral using Canva and edited promotional short-form videos.</li>
+                      <li>Achieved a <strong>15% increase in online user engagement</strong> through data-backed content scheduling.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Certifications() {
+        return (
+          <section id="certifications">
+            <div className="container">
+              <div className="section-header">
+                <span className="section-subtitle">VERIFIED CREDENTIALS</span>
+                <h2 className="section-title">Industry <span>Certifications</span></h2>
+              </div>
+              <div className="cert-grid">
+                <div className="glass-card cert-card">
+                  <div>
+                    <span className="cert-badge">Verified Certification</span>
+                    <div className="cert-title">Tata Data Visualization</div>
+                    <div className="cert-issuer">Forage Virtual Internship &nbsp;•&nbsp; Dec 2024</div>
+                    <p className="cert-desc">Mastered executive dashboard design, business metric selection, data storytelling, and presenting visual analytics to senior leadership.</p>
+                  </div>
+                </div>
+
+                <div className="glass-card cert-card">
+                  <div>
+                    <span className="cert-badge">Verified Simulation</span>
+                    <div class="cert-title">BCGX Data Science Simulation</div>
+                    <div class="cert-issuer">BCG Data Science Programme &nbsp;•&nbsp; Dec 2024</div>
+                    <p class="cert-desc">Executed customer churn exploratory data analysis, hypothesis testing, feature importance engineering, and predictive modeling.</p>
+                  </div>
+                </div>
+
+                <div className="glass-card cert-card">
+                  <div>
+                    <span className="cert-badge" style={{ background: 'rgba(6, 182, 212, 0.15)', color: '#38bdf8', borderColor: 'rgba(6, 182, 212, 0.3)' }}>Elite Classification</span>
+                    <div className="cert-title">NPTEL Entrepreneurship</div>
+                    <div className="cert-issuer">NPTEL / IIT Certification &nbsp;•&nbsp; Score: 63%</div>
+                    <p className="cert-desc">Graduated with Elite classification, studying startup business models, market dynamics, venture financing, and product feasibility.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Achievements() {
+        return (
+          <section id="achievements">
+            <div className="container">
+              <div className="section-header">
+                <span className="section-subtitle">LEADERSHIP & DISCIPLINE</span>
+                <h2 className="section-title">Key <span>Achievements</span></h2>
+              </div>
+              <div className="achieve-grid">
+                <div className="glass-card achieve-card">
+                  <div className="achieve-icon">🏆</div>
+                  <div>
+                    <div className="achieve-title">INVICTUS Student Association Leader</div>
+                    <div className="achieve-desc">Core association leader at Dr. MCET organizing technical symposia, coding hackathons, and departmental workshops.</div>
+                  </div>
+                </div>
+
+                <div className="glass-card achieve-card">
+                  <div className="achieve-icon">🛡️</div>
+                  <div>
+                    <div className="achieve-title">TN Police Cyber Security Poster Presentation</div>
+                    <div className="achieve-desc">Awardee in Tamil Nadu Police Cyber Security poster competition communicating digital safety & anti-phishing hygiene.</div>
+                  </div>
+                </div>
+
+                <div className="glass-card achieve-card">
+                  <div className="achieve-icon">🏃</div>
+                  <div>
+                    <div className="achieve-title">Competitive Pole Vault Athlete</div>
+                    <div className="achieve-desc">Active collegiate pole vault athlete representing dedication, high physical discipline, mental resilience, and precision.</div>
+                  </div>
+                </div>
+
+                <div className="glass-card achieve-card">
+                  <div className="achieve-icon">🎬</div>
+                  <div>
+                    <div className="achieve-title">Social Media Management & Video Editing</div>
+                    <div className="achieve-desc">Editor and manager for digital media channels including <em>Arasiyal Seivom</em>, driving +15% audience growth via video assets.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function ResumeBanner() {
+        return (
+          <section>
+            <div className="container">
+              <div className="resume-banner">
+                <h3>Looking for my Complete Resume & Portfolio Document?</h3>
+                <p>Download the fully structured, ATS-friendly PDF document containing in-depth project architecture diagrams, dataset breakdowns, and academic credentials.</p>
+                <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <a href="resume.html" target="_blank" className="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    View & Export Resume (PDF)
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Contact({ onShowToast }) {
+        const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          setFormData({ name: '', email: '', subject: '', message: '' });
+          if (onShowToast) onShowToast();
+        };
+
+        return (
+          <section id="contact">
+            <div className="container">
+              <div className="section-header">
+                <span className="section-subtitle">GET IN TOUCH</span>
+                <h2 className="section-title">Contact <span>Me</span></h2>
+              </div>
+              <div className="contact-grid">
+                <div className="glass-card contact-info-card">
+                  <div>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#fff', marginBottom: '10px' }}>Let's discuss a project or opportunity</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '30px' }}>
+                      Open for AI & Data Science opportunities, Machine Learning internships, and full-stack AI product development roles.
+                    </p>
+                    <div className="contact-item">
+                      <div className="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                      <div><div className="contact-lbl">Email Address</div><a href="mailto:dvasanthakumarduraisamy@gmail.com" className="contact-val">dvasanthakumarduraisamy@gmail.com</a></div>
+                    </div>
+                    <div className="contact-item">
+                      <div className="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+                      <div><div className="contact-lbl">Phone</div><a href="tel:+919345285202" className="contact-val">+91 93452 85202</a></div>
+                    </div>
+                    <div className="contact-item">
+                      <div className="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></div>
+                      <div><div className="contact-lbl">LinkedIn</div><a href="https://linkedin.com/in/vasanthkumar083" target="_blank" className="contact-val">linkedin.com/in/vasanthkumar083</a></div>
+                    </div>
+                    <div className="contact-item">
+                      <div className="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></div>
+                      <div><div className="contact-lbl">GitHub</div><a href="https://github.com/vasanthakumar2005" target="_blank" className="contact-val">github.com/vasanthakumar2005</a></div>
+                    </div>
+                  </div>
+                </div>
+                <form className="glass-card contact-form" id="contact-form" onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="name">Your Name</label>
+                    <input type="text" id="name" className="form-input" required placeholder="John Doe" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="email">Email Address</label>
+                    <input type="email" id="email" className="form-input" required placeholder="john@company.com" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="subject">Subject</label>
+                    <input type="text" id="subject" className="form-input" required placeholder="AI Project Collaboration" value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="message">Message</label>
+                    <textarea id="message" className="form-input" required placeholder="Write your message here..." value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })}></textarea>
+                  </div>
+                  <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+                    Send Message
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Toast({ show }) {
+        return (
+          <div className={`toast ${show ? 'active' : ''}`} id="toast">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <div>
+              <div style={{ fontWeight: 700 }}>Message Sent!</div>
+              <div style={{ fontSize: '0.8rem', opacity: 0.9 }}>Thank you for reaching out. I'll get back to you shortly.</div>
+            </div>
+          </div>
+        );
+      }
+
+      function Footer() {
+        return (
+          <footer>
+            <div className="container footer-content">
+              <div className="footer-text">
+                &copy; 2026 <strong>VASANTHAKUMAR D</strong>. AI & Data Science Student Portfolio.
+              </div>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <a href="https://linkedin.com/in/vasanthkumar083" target="_blank" style={{ color: 'var(--text-subtle)', textDecoration: 'none' }}>LinkedIn</a>
+                <a href="https://github.com/vasanthakumar2005" target="_blank" style={{ color: 'var(--text-subtle)', textDecoration: 'none' }}>GitHub</a>
+                <a href="resume.html" target="_blank" style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}>Resume (PDF)</a>
+              </div>
+            </div>
+          </footer>
+        );
+      }
+
+      function App() {
+        const [showToast, setShowToast] = useState(false);
+
+        const handleToast = () => {
+          setShowToast(true);
+          setTimeout(() => setShowToast(false), 4000);
+        };
+
+        return (
+          <React.Fragment>
+            <ParticleCanvas />
+            <Navbar />
+            <Hero />
+            <About />
+            <Skills />
+            <Projects />
+            <Experience />
+            <Certifications />
+            <Achievements />
+            <ResumeBanner />
+            <Contact onShowToast={handleToast} />
+            <Toast show={showToast} />
+            <Footer />
+          </React.Fragment>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
